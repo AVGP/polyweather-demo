@@ -1,0 +1,30 @@
+{
+  "name": "polyweather",
+  "authors": [
+    "Martin Splitt"
+  ],
+  "description": "Weather is important, I guess.",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "^1.4.0",
+    "iron-localstorage": "^1.0.5",
+    "iron-ajax": "^1.2.0",
+    "iron-icons": "^1.1.3",
+    "app-router": "^2.6.1",
+    "paper-drawer-panel": "^1.0.9",
+    "paper-header-panel": "^1.1.5",
+    "paper-icon-button": "^1.0.7",
+    "paper-toolbar": "^1.1.4",
+    "paper-menu": "^1.2.2",
+    "paper-item": "^1.2.1"
+  }
+}

@@ -1,0 +1,27 @@
+<link rel="import" href="../elements/weather-tile.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+
+<dom-module id="dashboard-page">
+  <template>
+    <iron-localstorage name="city-ids" value="{{cityIds}}" on-iron-localstorage-load-empty="initStore"></iron-localstorage>
+    <template is="dom-repeat" items="[[cityIds]]">
+      <weather-tile city-id="[[item]]"></weather-tile>
+    </template>
+  </template>
+  <script>
+  var router = document.querySelector('app-router') // <6>
+
+  Polymer({
+    is: "dashboard-page",
+    properties: {
+      cityIds: {
+        type: Array,
+        value: []
+      }
+    },
+    initStore: function() {
+      this.set('cityIds', [])
+    }
+  })
+  </script>
+</dom-module>

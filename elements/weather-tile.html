@@ -1,0 +1,88 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="weather-tile">
+  <template>
+    <style>
+    :host {
+      display: inline-block;
+      width: 250px;
+      height: 250px;
+      margin: 1em;
+      text-align: center;
+      border: 1px solid #eee;
+    }
+
+    #temperature {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    </style>
+    <h2>[[cityName]]</h2>
+    <iron-ajax url="http://api.openweathermap.org/data/2.5/weather"
+      params='[[getParams(cityId, cityName)]]'
+      handle-as="json"
+      last-response="{{weather}}"
+      auto
+      loading="{{loading}}"
+      debounce-duration="500"></iron-ajax>
+    <template is="dom-if" if="[[loading]]">
+      <strong>Loading...</strong>
+    </template>
+    <template is="dom-if" if="[[isReady(loading, weather)]]">
+      <div><img src$="[[getIconUrl(weather.weather.0.icon)]]"></div>
+      <div id="temperature">[[weather.main.temp]] °C</div>
+      <div>[[weather.weather.0.description]]</div>
+    </template>
+  </template>
+  <script>
+  Polymer({
+    is: "weather-tile",
+    properties: {
+      weather: {
+        type: Object,
+        observer: '_weatherChanged'
+      },
+      cityId: {
+        type: String,
+        value: ''
+      },
+      cityName: {
+        type: String,
+        value: '',
+        notify: true
+      },
+      loading: Boolean
+    },
+
+    getIconUrl: function(iconCode) {
+      return 'http://openweathermap.org/img/w/' + iconCode + '.png'
+    },
+
+    getParams: function(cityId, cityName) {
+      var params = {
+        appid: 'a472da9dd140dea0ae5bc062b25dbd05',
+        units: 'metric'
+      }
+
+      if(cityId !== '') {
+        params.id = cityId
+      } else {
+        params.q = cityName
+      }
+
+      return params
+    },
+
+    isReady: function(isLoading, weather) {
+      return !isLoading && weather.weather
+    },
+
+    _weatherChanged: function(newValue) {
+      this.cityName = newValue.name
+      this.cityId = newValue.id
+      return newValue
+    }
+  })
+  </script>
+</dom-module>

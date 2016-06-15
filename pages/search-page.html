@@ -1,0 +1,36 @@
+<link rel="import" href="/elements/weather-tile.html">
+<link rel="import" href="/bower_components/iron-localstorage/iron-localstorage.html">
+
+<dom-module id="search-page">
+  <template>
+    <h2>Wetter in <input value="{{city::input}}"></h2>
+    <iron-localstorage name="city-ids" value="{{cityIds}}" on-iron-localstorage-load-empty="initStore"></iron-localstorage>
+    <weather-tile id="weatherTile" city-name="[[city]]"></weather-tile>
+    <p><button id="addToDashboard">[[city]] auf Dashboard speichern</button></p>
+  </template>
+  <script>
+  var router = document.querySelector('app-router') // <6>
+  Polymer({
+    is: "search-page",
+    properties: {
+      city: String,
+      cityIds: {
+        type: Array,
+        value: []
+      }
+    },
+    listeners: {
+      'addToDashboard.click': 'addToDashboard'
+    },
+    addToDashboard: function() {
+      var cityId = this.$.weatherTile.cityId
+      if(this.cityIds.indexOf(cityId) != -1) return
+
+      this.push('cityIds', cityId)
+    },
+    initStore: function() {
+      this.set('cityIds', [])
+    }
+  })
+  </script>
+</dom-module>
